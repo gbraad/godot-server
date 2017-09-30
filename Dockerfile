@@ -32,5 +32,6 @@ RUN dnf install -y wget unzip; \
     dnf clean all
 
 USER 1000
-ENTRYPOINT ["/usr/local/bin/godot"]
 
+#ENTRYPOINT ["/usr/local/bin/godot"]
+CMD ["/usr/local/bin/godot"]

@@ -1,12 +1,10 @@
 build:
-  image: fedora:26
-  variables:
-    DOCKER_HOST: "tcp://gbraad__dind-options:2375"
-    REMOVE_CONTAINER_IMAGES: y
+  image: docker:git
   services:
     - gbraad/dind-options:latest
+  variables:
+    DOCKER_HOST: "tcp://gbraad__dind-options:2375"
   before_script:
-    - dnf install -y docker git
     - docker login -u gbraad -p $DOCKER_PASSWORD
     - docker login -u gbraad -p $GITLAB_PASSWORD registry.gitlab.com
   script:
