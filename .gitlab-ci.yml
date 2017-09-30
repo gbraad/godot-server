@@ -1,0 +1,20 @@
+build:
+  image: fedora:26
+  variables:
+    DOCKER_HOST: "tcp://gbraad__dind-options:2375"
+    REMOVE_CONTAINER_IMAGES: y
+  services:
+    - gbraad/dind-options:latest
+  before_script:
+    - dnf install -y docker git
+    - docker login -u gbraad -p $DOCKER_PASSWORD
+    - docker login -u gbraad -p $GITLAB_PASSWORD registry.gitlab.com
+  script:
+    - docker build -t godot-server:2.1.4 . 
+    - docker tag godot-server:2.1.4 gbraad/godot-server:2.1.4
+    - docker push gbraad/godot-server:2.1.4
+    - docker tag godot-server:2.1.4 registry.gitlab.com/gbraad/godot-server:2.1.4
+    - docker push registry.gitlab.com/gbraad/godot-server:2.1.4
+  only:
+    - master
+
