@@ -4,15 +4,17 @@ build:
     - gbraad/dind-options:latest
   variables:
     DOCKER_HOST: "tcp://gbraad__dind-options:2375"
+    GODOT_VERSION: "2.1.4"
+    GODOT_VARIANT: "stable" 
   before_script:
     - docker login -u gbraad -p $DOCKER_PASSWORD
     - docker login -u gbraad -p $GITLAB_TOKEN registry.gitlab.com
   script:
-    - docker build -t godot-server:2.1.4 . 
-    - docker tag godot-server:2.1.4 gbraad/godot-server:2.1.4
-    - docker push gbraad/godot-server:2.1.4
-    - docker tag godot-server:2.1.4 registry.gitlab.com/gbraad/godot-server:2.1.4
-    - docker push registry.gitlab.com/gbraad/godot-server:2.1.4
+    - docker build --build-arg "GODOT_VERSION=$GODOT_VERSION" --build-arg "GODOT_VARIANT=$GODOT_VARIANT" -t godot-server:$GODOT_VERSION . 
+    - docker tag godot-server:$GODOT_VERSION gbraad/godot-server:$GODOT_VERSION
+    - docker push gbraad/godot-server:$GODOT_VERSION
+    - docker tag godot-server:$GODOT_VERSION registry.gitlab.com/gbraad/godot-server:$GODOT_VERSION
+    - docker push registry.gitlab.com/gbraad/godot-server:$GODOT_VERSION
   only:
     - master
 
